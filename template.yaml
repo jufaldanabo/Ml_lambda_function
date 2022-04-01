@@ -70,7 +70,7 @@ Resources:
   LambdaInferenceModel:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: lambda_inference_model
+      FunctionName: lambda-inference-model
       PackageType: Image
       MemorySize: 1024
       Timeout: 900
@@ -94,7 +94,7 @@ Resources:
   LambdaTrainModel:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: lambda_train_model
+      FunctionName: lambda-train-model
       PackageType: Image
       MemorySize: 1024
       Timeout: 900
