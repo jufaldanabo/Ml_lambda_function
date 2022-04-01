@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Ml_lambda_function
+
+  Sample SAM Template for Ml_lambda_function
+
+
+Resources:
+
+  # S3 Buckets
+  S3_model:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 's3-ml-model'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: "Project"
+          Value: "Ml_model"
+        - Key: "CreateBy"
+          Value: "Juan Aldana"
+        - Key: "CreateDate"
+          Value: "27-03-2022"
+        - Key: "Name"
+          Value: 'S3_Ml_model'
+
+  Role-ml-procesing:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: role-ml-procesing
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                  Service:
+                    - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        Path: /
+        ManagedPolicyArns:
+          - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        Policies:
+          - PolicyName: policy-s3-full-access
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:*
+                  Resource:
+                    - !GetAtt "S3_model.Arn"
+                    - !Sub "${S3_model.Arn}/*"
+        Tags:
+          - Key: "CreateBy"
+            Value: "Juan Aldana"
+          - Key: "CreateDate"
+            Value: "27-03-2022"
+          - Key: "Project"
+            Value: "Ml_Model"
+          - Key: "Name"
+            Value: "role-ml-procesing"
+
+
+
+  LambdaInferenceModel:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lambda_inference_model
+      PackageType: Image
+      MemorySize: 1024
+      Timeout: 900
+      Role: !GetAtt "Role-ml-procesing.Arn"
+      Events:
+        inference_model:
+          type: Api
+          Properties:
+            Path: / inference_model
+            Method: post
+      Tags:
+        Name: "lambda_inference_model"
+        CreateBy: "Juan Aldana"
+        CreateDate: "27-03-2022"
+        Project: "Ml_Model"
+    Metadata:
+      DockerContext: Deployment Model/LambdaInference
+      Dockerfile: Dockerfile
+
+
+  LambdaTrainModel:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lambda_train_model
+      PackageType: Image
+      MemorySize: 1024
+      Timeout: 900
+      Role: !GetAtt "Role-ml-procesing.Arn"
+      Events:
+        inference_model:
+          type: Api
+          Properties:
+            Path: / train_model
+            Method: post
+      Tags:
+        Name: "lambda_train_model"
+        CreateBy: "Juan Aldana"
+        CreateDate: "27-03-2022"
+        Project: "Ml_Model"
+    Metadata:
+      DockerContext: Deployment Model/LambdaTrain
+      Dockerfile: Dockerfile
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  ModelApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
