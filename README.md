@@ -42,7 +42,7 @@ El despliegue de esta  solucion se realizo en el ide de pycharm y los stack gene
 A continuacion se detalla la arquitectura para la solucion propuesta
 
 
-![image.png](images\arquitectura.PNG)
+![alt text](https://github.com/jufaldanabo/Ml_lambda_function/blob/main/images/arquitectura.PNG)
 
 ## Requisitos:
 
@@ -80,5 +80,5 @@ Docker version 20.10.5, build 55c4c88
 * Funciones Lambdas:
 
  Las funciones lambdas son servicios serverles de aws los cuales nos permiten generar ejecuciones de codigo en maximo 15 minutos y usando un maximo de  en memoria son muy buenas para la exposicion de modelos como servicio puesto que su costo es por milisegundoos y es escalable puesto que crece de manera horizontal es decir se proveen recursos de manera elastica para responder a las diferentes peticiones del cliente.
- 
+
  * Lambda Train
