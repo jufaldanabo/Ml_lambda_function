@@ -25,8 +25,9 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
     try:
-        model = create_model()
+        model, scaler_ = create_model()
         save_model(model=model, filename_model=event['filename_model'], name_bucket=event['name_bucket'])
+        save_model(model=scaler_, filename_model=event['filename_scaler'], name_bucket=event['name_bucket'])
 
         return {
             "statusCode": 200,

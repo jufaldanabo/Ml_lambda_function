@@ -9,10 +9,10 @@ Description: >
 Resources:
 
   # S3 Buckets
-  S3_model:
+  S3BucketModel:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: 's3-ml-model'
+      BucketName: 's3-bucket-model'
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -26,9 +26,9 @@ Resources:
         - Key: "CreateDate"
           Value: "27-03-2022"
         - Key: "Name"
-          Value: 'S3_Ml_model'
+          Value: 's3-bucket-model'
 
-  Role-ml-procesing:
+  RoleMLProcesing:
       Type: AWS::IAM::Role
       Properties:
         RoleName: role-ml-procesing
@@ -53,8 +53,8 @@ Resources:
                   Action:
                     - s3:*
                   Resource:
-                    - !GetAtt "S3_model.Arn"
-                    - !Sub "${S3_model.Arn}/*"
+                    - !GetAtt "S3BucketModel.Arn"
+                    - !Sub "${S3BucketModel.Arn}/*"
         Tags:
           - Key: "CreateBy"
             Value: "Juan Aldana"
@@ -74,13 +74,13 @@ Resources:
       PackageType: Image
       MemorySize: 1024
       Timeout: 900
-      Role: !GetAtt "Role-ml-procesing.Arn"
+      Role: !GetAtt "RoleMLProcesing.Arn"
       Events:
-        inference_model:
-          type: Api
+        Inference:
+          Type: Api
           Properties:
-            Path: / inference_model
-            Method: post
+            Path: /inference
+            Method: Post
       Tags:
         Name: "lambda_inference_model"
         CreateBy: "Juan Aldana"
@@ -98,15 +98,15 @@ Resources:
       PackageType: Image
       MemorySize: 1024
       Timeout: 900
-      Role: !GetAtt "Role-ml-procesing.Arn"
+      Role: !GetAtt "RoleMLProcesing.Arn"
       Events:
-        inference_model:
-          type: Api
+        Train:
+          Type: Api
           Properties:
-            Path: / train_model
-            Method: post
+            Path: /train
+            Method: Post
       Tags:
-        Name: "lambda_train_model"
+        Name: "lambda-train-model"
         CreateBy: "Juan Aldana"
         CreateDate: "27-03-2022"
         Project: "Ml_Model"
@@ -116,6 +116,10 @@ Resources:
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  ModelApi:
+  ModelApiTrain:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/train/"
+  ModelApiTest:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/inference/"
+

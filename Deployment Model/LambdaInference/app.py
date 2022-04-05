@@ -1,6 +1,5 @@
-import json
-
-# import requests
+import numpy as np
+from function import inference
 
 
 def lambda_handler(event, context):
@@ -24,19 +23,11 @@ def lambda_handler(event, context):
 
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
-
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    x = np.array(event["x_test"]).reshape(1, -1)
+    result = inference(x_test=x, filename_scaler=event["filename_scaler"], filename_model=event["filename_model"],
+                       name_bucket=event["name_bucket"])
 
     return {
         "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
+        "result": result
     }

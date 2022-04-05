@@ -19,7 +19,7 @@
                 </list>
               </option>
               <option name="repoUri" value="578005782069.dkr.ecr.us-east-1.amazonaws.com/ecr_model" />
-              <option name="stackName" value="portfolio-lambda-ml" />
+              <option name="stackName" value="portfolio-lambda-ml1" />
             </DeploySamConfig>
           </value>
         </entry>

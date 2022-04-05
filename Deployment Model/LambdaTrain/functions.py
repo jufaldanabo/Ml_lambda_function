@@ -48,15 +48,12 @@ def feature_engineering(train_array: np.array, test_array: np.array) -> tuple:
     :param train_array:
     :return:
     """
-    scaler_train = StandardScaler()
-    scaler_train.fit(train_array)
-    train_array = scaler_train.transform(train_array)
+    scaler_ = StandardScaler()
+    scaler_.fit(train_array)
+    train_array = scaler_.transform(train_array)
+    test_array = scaler_.transform(test_array)
 
-    scaler_test = StandardScaler()
-    scaler_test.fit(test_array)
-    test_array = scaler_test.transform(test_array)
-
-    return train_array, test_array
+    return train_array, test_array, scaler_
 
 
 def tuning_knn(x_train: np.array, y_train: np.array) -> object:
@@ -112,11 +109,9 @@ def create_model():
     """
     df = load_dataset()
     x_train, x_test, y_train, y_test = train_test_split(df)
-    x_train, x_test = feature_engineering(x_train, x_test)
+    x_train, x_test, scaler_ = feature_engineering(x_train, x_test)
     model_knn = tuning_knn(x_train, y_train)
     model_sgd = tuning_sgd(x_train, y_train)
     model_f = selection_model(x_test, y_test, model_knn, model_sgd)
 
-    return model_f
-
-
+    return model_f, scaler_
