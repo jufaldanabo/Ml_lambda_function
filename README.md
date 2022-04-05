@@ -66,7 +66,7 @@ C:\Users\user>sam --version
 SAM CLI, version 1.24.1
 ```
 * installar el plugin de aws en pycharm
-![image.png](images\pycharm.PNG)
+![alt text](https://github.com/jufaldanabo/Ml_lambda_function/blob/main/images/pycharm.PNG)
 
 * installar docker
 
