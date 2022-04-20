@@ -19,7 +19,8 @@
                 </list>
               </option>
               <option name="repoUri" value="578005782069.dkr.ecr.us-east-1.amazonaws.com/ecr_model" />
-              <option name="stackName" value="portfolio-lambda-ml1" />
+              <option name="stackName" value="ModelMachineLearning" />
+              <option name="useContainer" value="true" />
             </DeploySamConfig>
           </value>
         </entry>
