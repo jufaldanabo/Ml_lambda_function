@@ -93,7 +93,7 @@ Docker version 20.10.5, build 55c4c88
  {"x_test": [0.7,1] ,
 "filename_model":"Model_ml",
 "filename_scaler":"scaler",
-"name_bucket":"s3-ml-model"}
+"name_bucket":"s3-bucket-model"}
 
  ```
 
@@ -106,7 +106,7 @@ Docker version 20.10.5, build 55c4c88
   ```JSON
 {"filename_model":"Model_ml",
 "filename_scaler":"scaler", 
-  "name_bucket":"s3-ml-model"}
+  "name_bucket":"s3-bucket-model"}
 ```
 
 ### Api Gateway:
